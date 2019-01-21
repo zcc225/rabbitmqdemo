@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+		PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- 使用setting标签开启驼峰自动映射 -->
+	<settings>
+        <!-- 打印查询语句 -->  
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+		<!-- 开启驼峰命名 -->
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+        <!--     打印SQL只需要加一个setting就可以了。  
+ mybatis的日志打印方式比较多，SLF4J | LOG4J | LOG4J2 | JDK_LOGGING |  
+  COMMONS_LOGGING | STDOUT_LOGGING | NO_LOGGING，可以根据自己的需要进行配置 --> 
+  		<!-- 开启ehcache缓存 -->
+  		<setting name="cacheEnabled" value="false"/> 
+	</settings>
+	<plugins>
+		<!-- com.github.pagehelper为PageHelper类所在包名 -->
+		<plugin interceptor="com.github.pagehelper.PageHelper">
+			<property name="dialect" value="mysql" />
+			<!-- <property name="rowBoundsWithCount" value="true" /> -->
+		</plugin>
+
+		<!-- 通用mapper -->
+		<plugin interceptor="com.github.abel533.mapperhelper.MapperInterceptor">
+			<property name="IDENTITY" value="MYSQL" />
+			<property name="mappers" value="com.github.abel533.mapper.Mapper" />
+		</plugin>
+	</plugins>
+</configuration>

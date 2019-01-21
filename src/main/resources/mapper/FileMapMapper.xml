@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 映射文件，映射到对应的SQL接口 -->
+<mapper namespace="com.daixinlian.dao.FileMapMapper">
+
+	<!--返回的结果集，用于关联实体类属性和数据库字段 -->
+	<!--如果实体类属性和数据库属性名保持一致，就不需要javaType和jdbcType（必须大写）属性 -->
+	<resultMap id="Filemap_resultMap" type="com.daixinlian.entity.FileMap">
+		<result column="id" property="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+		<result column="fileId" property="fileId" javaType="java.lang.String" jdbcType="VARCHAR" />
+		<result column="tripType" property="tripType" javaType="java.lang.Integer" jdbcType="INTEGER" />
+		<result column="createTime" property="createTime" javaType="java.lang.String" jdbcType="VARCHAR" />
+		<result column="fileMd5" property="fileMd5" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		
+	</resultMap>
+	
+	<!-- 查询数据 -->
+	<!-- 入参定义：在接口定义中使用@Param注解(单参/多参都可使用) -->
+	<!-- 语句末尾不能有分号：ORA-00911: invalid character -->
+	<select id="test_query" resultMap="Filemap_resultMap">
+		select `id`,`createTime`,`fileId`,`fileMd5`,`tripType` from `fileMap` t where 1=1 
+		<if test="id != null">
+			and `id` = #{id}
+		</if>	
+	</select>
+
+	<!-- 插入数据 -->
+	<!-- 入参定义：实体类，会自动解析属性到对应的值-->
+	<insert id="test_insert" parameterType="com.daixinlian.entity.FileMap">
+		insert into fileMap2 (`id`, `createTime`, `fileId`, `fileMd5`, `tripType`)
+		values (#{id}, #{createTime}, #{fileId},  #{fileMd5}, #{tripType})
+		
+	</insert>
+	
+
+	<!-- 批量插入生成的兑换码 -->
+     <insert id ="test_batch_insert" parameterType="java.util.List" >
+         
+           insert into fileMap2 (`id`, `createTime`, `fileId`, `fileMd5`, `tripType`)
+		values 
+            <foreach collection ="list" item="fileMap" index= "index" separator =",">
+                (
+                #{fileMap.id}, #{fileMap.createTime}, #{fileMap.fileId},  #{fileMap.fileMd5}, #{fileMap.tripType}
+                )
+            </foreach >
+     </insert >
+
+</mapper>
